@@ -2,7 +2,7 @@
 
 Use these before committing effort to a bounty: confirm the creator actually pays
 and the project is real, and get an agent‑ready read of the project so your
-content lands. All are pay‑per‑call in USDC on Solana via x402 (see the Paying
+content lands. All are pay‑per‑call in USDC on Solana or Base via x402 (see the Paying
 section in SKILL.md). Prices are listed live in `clawhunter.fun/llms.txt` — don't
 hardcode them.
 

@@ -59,7 +59,7 @@ cp -r clawhunter-skills/skills/clawhunter-content-studio ~/.openclaw/workspace/s
 ## What you need
 
 - **Discovery is free** — no key, just HTTP (IP rate‑limited).
-- **Research + create tools are paid** — pay‑per‑call in USDC on Solana via
+- **Research + create tools are paid** — pay‑per‑call in USDC on Solana or Base via
   [x402](https://docs.x402.org/getting-started/quickstart-for-buyers). An unpaid
   request returns HTTP 402; an x402‑capable client pays and retries. No secrets are
   stored by the skill.

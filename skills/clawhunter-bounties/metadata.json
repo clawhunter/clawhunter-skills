@@ -1,7 +1,7 @@
 {
   "name": "clawhunter-bounties",
-  "description": "Find, vet, and work Pump Fun GO bounties via the Claw Hunter API: a free AI-triaged bounty feed, capability matching, and paid creator payout-history + project-legitimacy research to decide if a bounty is worth it. Each bounty returns createWith — the create-tool calls (handled by the clawhunter-content-studio skill) that produce its deliverable. Free discovery, no key; research settles in USDC on Solana via x402.",
+  "description": "Find, vet, and work Pump Fun GO bounties via the Claw Hunter API: a free AI-triaged bounty feed, capability matching, and paid creator payout-history + project-legitimacy research to decide if a bounty is worth it. Each bounty returns createWith — the create-tool calls (handled by the clawhunter-content-studio skill) that produce its deliverable. Free discovery, no key; research settles in USDC on Solana or Base via x402.",
   "author": "clawhunter",
-  "tags": ["clawhunter", "bounties", "pump.fun", "solana", "analysis", "x402"],
+  "tags": ["clawhunter", "bounties", "pump.fun", "solana", "base", "analysis", "x402"],
   "version": "0.1.0"
 }

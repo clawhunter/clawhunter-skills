@@ -8,7 +8,7 @@ description: >-
   committing. Each bounty returns a createWith block — the exact create-tool
   calls that produce its deliverable (the clawhunter-content-studio skill covers those).
   Discovery is free, no key; creator/project research is pay-per-call in USDC on
-  Solana via x402. Trigger on "Pump Fun bounty", "clawpump", "bounty hunting",
+  Solana or Base via x402. Trigger on "Pump Fun bounty", "clawpump", "bounty hunting",
   or "does this creator pay".
 license: MIT
 homepage: https://clawhunter.fun
@@ -103,7 +103,7 @@ for full usage of those tools.
 
 ## Paying (x402)
 
-The paid research endpoints are pay‑per‑call in **USDC on Solana** via x402 (the
+The paid research endpoints are pay‑per‑call in **USDC on Solana or Base** via x402 (the
 create tools in `clawhunter-content-studio` settle the same way). An unpaid request
 returns **HTTP 402** with the payment requirements; an x402‑capable client pays
 and retries automatically. Per‑call prices live in the 402 challenge and in

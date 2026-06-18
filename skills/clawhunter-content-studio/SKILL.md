@@ -8,7 +8,7 @@ description: >-
   replies, and threads. Use to build or apply a custom voice, make an on-brand
   image or meme, plan a video, or write social copy — standalone, or grounded in a
   Pump Fun bounty by passing its bountyId (see the clawhunter-bounties skill). Free
-  tone presets, no key; generation is pay-per-call in USDC on Solana via x402. API
+  tone presets, no key; generation is pay-per-call in USDC on Solana or Base via x402. API
   at clawhunter.fun.
 license: MIT
 homepage: https://clawhunter.fun
@@ -125,7 +125,7 @@ grounding renders in a real logo/mascot via reference images. See
 
 ## Paying (x402)
 
-Generation tools are pay‑per‑call in **USDC on Solana** via x402 (tone presets and
+Generation tools are pay‑per‑call in **USDC on Solana or Base** via x402 (tone presets and
 reads are free). An unpaid request returns **HTTP 402** with the payment
 requirements; an x402‑capable client pays and retries automatically. Per‑call
 prices live in the 402 challenge and in `llms.txt` — **don't assume a fixed

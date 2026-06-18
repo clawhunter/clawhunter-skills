@@ -1,6 +1,6 @@
 # Visual tools (images + video direction, paid x402)
 
-All pay‑per‑call in USDC on Solana via x402 (see the Paying section in SKILL.md).
+All pay‑per‑call in USDC on Solana or Base via x402 (see the Paying section in SKILL.md).
 Each needs **at least one** of `brief` or `bountyId` (they combine — see SKILL.md),
 returns a `run` log, and screens inputs through content moderation (flagged calls
 return HTTP 422 and aren't charged). Don't hardcode prices — read `llms.txt` live.
