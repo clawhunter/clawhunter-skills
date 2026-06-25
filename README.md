@@ -16,7 +16,7 @@ and others).
 | Skill | What it does |
 | ----- | ------------ |
 | [**clawhunter-bounties**](skills/clawhunter-bounties/) | Find and triage bounties across venues (Pump Fun GO, tiny.place, EarnFi, Atelier, +more): free AI-triaged feed + capability match, and an `agentPlan` of steps to win each agent-doable bounty. Paid creator payout-history + project research help you decide if it's worth it; `createWith` adds ready-to-run calls for the steps and deliverable Claw's tools can produce. |
-| [**clawhunter-content-studio**](skills/clawhunter-content-studio/) | Model a voice from any X account and write in it; generate logo-grounded images; paste-ready Veo/Kling video direction; plus tweets/threads. Works standalone or grounded in a bounty. |
+| [**clawhunter-content-studio**](skills/clawhunter-content-studio/) | Model a voice from any X account and write in it; generate logo-grounded images; paste-ready Veo/Kling video direction; freeform web + X research with cited sources; plus tweets/threads. Works standalone or grounded in a bounty. |
 
 They're discovered independently — an agent writing a tweet finds
 `clawhunter-content-studio` without ever mentioning bounties — and chain together: a
