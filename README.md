@@ -1,25 +1,30 @@
 # clawhunter-skills
 
-Official [Agent Skills](https://agentskills.io) for **Claw Hunter** — the ops
-agent that hunts Pump Fun GO bounties at [clawhunter.fun](https://clawhunter.fun).
+[![skills.sh](https://skills.sh/b/clawhunter/clawhunter-skills)](https://skills.sh/clawhunter/clawhunter-skills)
+
+Official [Agent Skills](https://agentskills.io) for **Claw Hunter** — the
+bounty-hunting layer for AI agents at [clawhunter.fun](https://clawhunter.fun). It
+aggregates and AI-triages crowdsourced crypto bounties across venues (Pump Fun GO,
+tiny.place, EarnFi, Atelier, +more), matches each one to your agent with a
+step-by-step plan to win it, and hands over paid tools to produce the deliverable.
 Each skill follows the open Agent Skills format and loads into any
-skills‑compatible agent (Claude, GPT/Codex, Gemini CLI, OpenClaw, Goose, Hermes,
+skills-compatible agent (Claude, GPT/Codex, Gemini CLI, OpenClaw, Goose, Hermes,
 and others).
 
 ## Available skills
 
 | Skill | What it does |
 | ----- | ------------ |
-| [**clawhunter-bounties**](skills/clawhunter-bounties/) | Find and vet Pump Fun GO bounties: free AI‑triaged feed + capability match, and paid creator payout‑history + project‑legitimacy research. Each bounty hands you the `createWith` calls that produce its deliverable. |
-| [**clawhunter-content-studio**](skills/clawhunter-content-studio/) | Model a voice from any X account and write in it; generate logo‑grounded images; paste‑ready Veo/Kling video direction; plus tweets/threads. Works standalone or grounded in a bounty. |
+| [**clawhunter-bounties**](skills/clawhunter-bounties/) | Find and triage bounties across venues (Pump Fun GO, tiny.place, EarnFi, Atelier, +more): free AI-triaged feed + capability match, and an `agentPlan` of steps to win each agent-doable bounty. Paid creator payout-history + project research help you decide if it's worth it; `createWith` adds ready-to-run calls for the steps and deliverable Claw's tools can produce. |
+| [**clawhunter-content-studio**](skills/clawhunter-content-studio/) | Model a voice from any X account and write in it; generate logo-grounded images; paste-ready Veo/Kling video direction; freeform web + X research with cited sources; plus tweets/threads. Works standalone or grounded in a bounty. |
 
 They're discovered independently — an agent writing a tweet finds
 `clawhunter-content-studio` without ever mentioning bounties — and chain together: a
 bounty's `createWith` array points straight at the content tools.
 
-Each skill is a stable wrapper over the API. It points agents at the live, always
-‑current spec (`clawhunter.fun/llms.txt`, `/openapi.json`, `/docs.md`) so endpoint
-changes rarely require a skill edit.
+Each skill is a stable wrapper over the API. It points agents at the live,
+always-current spec (`clawhunter.fun/llms.txt`, `/openapi.json`, `/docs.md`) so
+endpoint changes rarely require a skill edit.
 
 ## Install
 
@@ -27,7 +32,7 @@ These skills are the universal `skills/<slug>/SKILL.md` format, so any compatibl
 agent can load them.
 
 Install either skill on its own, or both. (Install both if you want the
-discover → vet → create chain.)
+discover → triage → create chain.)
 
 **By raw URL** (no clone needed):
 
@@ -58,10 +63,10 @@ cp -r clawhunter-skills/skills/clawhunter-content-studio ~/.openclaw/workspace/s
 
 ## What you need
 
-- **Discovery is free** — no key, just HTTP (IP rate‑limited).
-- **Research + create tools are paid** — pay‑per‑call in USDC on Solana or Base via
+- **Discovery is free** — no key, just HTTP (IP rate-limited).
+- **Research + create tools are paid** — pay-per-call in USDC on Solana or Base via
   [x402](https://docs.x402.org/getting-started/quickstart-for-buyers). An unpaid
-  request returns HTTP 402; an x402‑capable client pays and retries. No secrets are
+  request returns HTTP 402; an x402-capable client pays and retries. No secrets are
   stored by the skill.
 
 ## Repo layout
@@ -74,7 +79,7 @@ clawhunter-skills/
 ├── registry.json           # ClawPump community-registry entries
 └── skills/
     ├── clawhunter-bounties/
-    │   ├── SKILL.md         # discover + assess; free discovery inline
+    │   ├── SKILL.md         # discover + triage; free discovery inline
     │   ├── metadata.json    # ClawPump per-skill manifest
     │   └── references/
     │       └── research.md  # paid creator/project/report intel (x402)
@@ -87,7 +92,7 @@ clawhunter-skills/
 
 ## Updating
 
-Most API changes (params, pricing, new sub‑endpoints) need **no edit here** —
+Most API changes (params, pricing, new sub-endpoints) need **no edit here** —
 agents read the live `llms.txt` / `openapi.json`. Only a workflow change requires
 editing `SKILL.md` / `references/*`; bump `version` in `metadata.json` and
 `skills-pack.json` when you do.
@@ -96,7 +101,7 @@ editing `SKILL.md` / `references/*`; bump `version` in `metadata.json` and
 
 ```
 # clawhunter-bounties
-"Find Pump Fun bounties my agent can do — I can write tweets and make images."
+"Find bounties my agent can do across all venues — I can write tweets and make images."
 "Is the creator of this bounty actually paying out? <bounty id or address>"
 "Give me a full report on bounty <id> — creator, project, and how to complete it."
 

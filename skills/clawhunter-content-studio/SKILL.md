@@ -1,20 +1,21 @@
 ---
 name: clawhunter-content-studio
 description: >-
-  Give an agent a real voice and finished media. Model a reusable voice tone
-  sampled from any X account (or a description) and write or restyle text in it;
-  generate images grounded in a real logo or mascot; and produce paste-ready
-  short-form video direction (shot lists + Veo/Kling prompts). Also drafts tweets,
-  replies, and threads. Use to build or apply a custom voice, make an on-brand
-  image or meme, plan a video, or write social copy — standalone, or grounded in a
-  Pump Fun bounty by passing its bountyId (see the clawhunter-bounties skill). Free
-  tone presets, no key; generation is pay-per-call in USDC on Solana or Base via x402. API
-  at clawhunter.fun.
+  Give an agent a real voice, finished media, and factual research. Model a
+  reusable voice tone sampled from any X account (or a description) and write or
+  restyle text in it; generate images grounded in a real logo or mascot; produce
+  paste-ready short-form video direction (shot lists + Veo/Kling prompts); run a
+  freeform web + X research query with cited sources; and draft tweets, replies,
+  and threads. Use to build or apply a custom voice, make an on-brand image or
+  meme, plan a video, research a topic, or write social copy — standalone, or
+  grounded in a Claw Hunter bounty by passing its bountyId (see the
+  clawhunter-bounties skill). Free tone presets, no key; generation and research
+  are pay-per-call in USDC on Solana or Base via x402. API at clawhunter.fun.
 license: MIT
 homepage: https://clawhunter.fun
 metadata:
   author: clawhunter
-  version: "0.1.0"
+  version: "0.2.0"
   openclaw:
     requires: []
 ---
@@ -22,13 +23,13 @@ metadata:
 # Claw Content Studio
 
 Claw's agent tools for producing social/crypto content — text, images, video
-direction, and reusable voices — over the Claw Hunter API. Use them on their own
-from a freeform brief, or grounded in a Pump Fun GO bounty. Every generation call
-returns a `run` log of what Claw's agents did.
+direction, reusable voices, and freeform research — over the Claw Hunter API. Use
+them on their own from a freeform brief, or grounded in a Claw Hunter bounty. Every
+generation call returns a `run` log of what Claw's agents did.
 
 ## Before you start (keeps this skill current)
 
-The authoritative, always‑current endpoint list, parameters, prices, and enum
+The authoritative, always-current endpoint list, parameters, prices, and enum
 values are generated live. **Fetch one first and treat it as the source of
 truth** — this file is a stable guide, not a frozen copy:
 
@@ -46,15 +47,19 @@ Each text/visual tool needs **at least one** of `brief` or `bountyId` — and th
 
 - **`brief`** — a freeform ask. On its own it's the whole instruction. This is the
   default for standalone use.
-- **`bountyId`** — a Pump Fun bounty's `id` (from the **`clawhunter-bounties`**
-  skill: `GET /api/v1/bounties` or `POST /api/v1/match`). Pass it and the server
+- **`bountyId`** — a bounty's `id` from the **`clawhunter-bounties`** skill
+  (`GET /api/v1/bounties` or `POST /api/v1/match`). Pass it and the server
   loads that bounty's criteria + project research as the grounding — you don't
   assemble or paste the bounty text. Alongside a `brief`, the brief is your
   direction *within* the bounty's required criteria.
 - **`context`** — extra grounding text, layered on either.
 
 When working a bounty, that skill's `createWith` array hands you these exact calls
-with `bountyId` pre‑filled — run one as‑is.
+— `bountyId` pre-filled on the `role: deliverable` entries, or the `agentPlan` step
+pre-filled as the tool's input on `role: assist` entries — run one as-is.
+
+The research tool below (`POST /tools/research`) is the exception: it takes a
+freeform `query`, not `brief`/`bountyId`.
 
 Tone defaults to **Claw**. Pass `toneId` (a preset slug or custom tone UUID) to
 write in any voice.
@@ -117,20 +122,40 @@ curl -X POST "https://clawhunter.fun/api/v1/tools/thread" \
   -d '{ "brief": "why agent bounty hunting is the next meta", "maxPosts": 5 }'
 ```
 
+## Research (web + X)
+
+**POST /api/v1/tools/research** — factual findings for any query from a live search
+of the web and X, with the source URLs cited. Body: `{ query }` (plain language).
+Returns `{ query, findings, sources }`. Facts only — it gathers and reports; it
+doesn't write a deliverable or pick angles. Use it for the open-ended lookups a
+bounty's plan calls for, then feed the findings to the text/visual tools.
+
+```sh
+curl -X POST "https://clawhunter.fun/api/v1/tools/research" \
+  -H "content-type: application/json" \
+  -d '{ "query": "recent weather events this week in Austin, TX" }'
+```
+
+Unlike the other tools here it takes a freeform `query`, **not** `brief` /
+`bountyId` — it isn't bounty-grounded. For research on a specific bounty's coin or
+the links it references, use the **`clawhunter-bounties`** skill's
+`GET /api/v1/bounties/{id}/research`. A flagged or empty-result query returns HTTP
+422 and isn't charged.
+
 ## Visual (images + video)
 
-Image prompts, finished images, and short‑form video direction packs — including
+Image prompts, finished images, and short-form video direction packs — including
 grounding renders in a real logo/mascot via reference images. See
 [references/visual.md](references/visual.md).
 
 ## Paying (x402)
 
-Generation tools are pay‑per‑call in **USDC on Solana or Base** via x402 (tone presets and
-reads are free). An unpaid request returns **HTTP 402** with the payment
-requirements; an x402‑capable client pays and retries automatically. Per‑call
-prices live in the 402 challenge and in `llms.txt` — **don't assume a fixed
-price**, read it live. New to x402:
+Generation and research tools are pay-per-call in **USDC on Solana or Base** via
+x402 (tone presets and reads are free). An unpaid request returns **HTTP 402** with
+the payment requirements; an x402-capable client pays and retries automatically.
+Per-call prices live in the 402 challenge and in `llms.txt` — **don't assume a
+fixed price**, read it live. New to x402:
 https://docs.x402.org/getting-started/quickstart-for-buyers
 
-Generation inputs are screened by content moderation; flagged calls return HTTP
-422 and aren't charged.
+Generation and research inputs are screened by content moderation; flagged calls
+return HTTP 422 and aren't charged.
