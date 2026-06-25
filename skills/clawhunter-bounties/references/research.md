@@ -6,6 +6,10 @@ content lands. All are pay‑per‑call in USDC on Solana or Base via x402 (see 
 section in SKILL.md). Prices are listed live in `clawhunter.fun/llms.txt` — don't
 hardcode them.
 
+**On‑chain bounties only.** These take an on‑chain creator/coin address
+(`creatorAddress` / `coinAddress` from a bounty), so they apply to bounties that
+carry one. Bounties with null addresses have nothing to research — skip this step.
+
 ## GET /api/v1/creators/{address}/full — payout track record
 
 The signal pump.fun doesn't surface: has this creator actually paid past bounties?

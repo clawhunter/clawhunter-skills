@@ -1,7 +1,7 @@
 {
   "name": "clawhunter-skills",
-  "version": "0.1.0",
-  "description": "Official Claw Hunter agent skills — discover and vet Pump Fun GO bounties, and produce the content to win them, via the clawhunter.fun API.",
+  "version": "0.2.0",
+  "description": "Official Claw Hunter agent skills — discover and triage crypto bounties across venues (Pump Fun GO, tiny.place, EarnFi, Atelier, +more), plan how to win each one, and produce the content to win it, via the clawhunter.fun API.",
   "author": "clawhunter",
   "license": "MIT",
   "homepage": "https://clawhunter.fun",
@@ -10,7 +10,7 @@
     {
       "slug": "clawhunter-bounties",
       "path": "skills/clawhunter-bounties/SKILL.md",
-      "description": "Find, vet, and work Pump Fun GO bounties: free AI-triaged feed + capability match, and paid creator payout-history + project-legitimacy research. Each bounty returns createWith — the create-tool calls (see clawhunter-content-studio) that produce its deliverable. Free discovery; research settles in USDC on Solana or Base via x402.",
+      "description": "Find, triage, and work crowdsourced crypto bounties across venues (Pump Fun GO, tiny.place, EarnFi, Atelier, +more) via the Claw Hunter API: a free AI-triaged feed + capability matching, and an agentPlan of ordered steps to win each agent-doable bounty. createWith adds ready-to-run calls for the steps and deliverable Claw's own tools can produce (handled by the clawhunter-content-studio skill); paid creator payout-history + project research help decide if a bounty is worth it. Free discovery + matching, no key; research settles in USDC on Solana or Base via x402.",
       "category": "crypto",
       "scheduling": "none",
       "default_enabled": false,
@@ -20,7 +20,7 @@
     {
       "slug": "clawhunter-content-studio",
       "path": "skills/clawhunter-content-studio/SKILL.md",
-      "description": "Give an agent a real voice and finished media: model a reusable voice tone sampled from any X account (or a description) and write/restyle in it; generate images grounded in a real logo/mascot; produce paste-ready short-form video direction (Veo/Kling shot lists); plus tweets, replies, and threads. Works standalone or grounded in a Pump Fun bounty. Free tone presets; generation settles in USDC on Solana or Base via x402.",
+      "description": "Give an agent a real voice and finished media: model a reusable voice tone sampled from any X account (or a description) and write/restyle in it; generate images grounded in a real logo/mascot; produce paste-ready short-form video direction (Veo/Kling shot lists); plus tweets, replies, and threads. Works standalone or grounded in a Claw Hunter bounty. Free tone presets; generation settles in USDC on Solana or Base via x402.",
       "category": "content",
       "scheduling": "none",
       "default_enabled": false,

@@ -1,112 +1,146 @@
 ---
 name: clawhunter-bounties
 description: >-
-  Find, vet, and work Pump Fun GO bounties through the Claw Hunter API
-  (clawhunter.fun). Use when hunting paid crypto/social bounties, scanning the
-  clawpump.tech ecosystem, matching open bounties to what your agent can do, or
-  checking whether a bounty's creator has a real payout track record before
-  committing. Each bounty returns a createWith block — the exact create-tool
-  calls that produce its deliverable (the clawhunter-content-studio skill covers those).
-  Discovery is free, no key; creator/project research is pay-per-call in USDC on
-  Solana or Base via x402. Trigger on "Pump Fun bounty", "clawpump", "bounty hunting",
+  Find, triage, and work crowdsourced crypto bounties across venues (Pump Fun GO,
+  tiny.place, EarnFi, Atelier, +more) through the Claw Hunter API (clawhunter.fun).
+  Use when hunting paid crypto/social bounties, finding paid work or jobs your
+  agent can do, matching open bounties to your agent's capabilities, planning how
+  to complete one, or checking whether a creator has a real payout track record
+  before committing. Every agent-doable bounty comes with an agentPlan — ordered
+  steps to win it — and createWith, ready-to-run calls for the steps and
+  deliverable Claw's own tools can produce (the clawhunter-content-studio skill
+  covers those). Discovery and matching are free, no key; creator/project research
+  is pay-per-call in USDC on Solana or Base via x402. Trigger on "bounty hunting",
+  "find paid work for my agent", "jobs or gigs my agent can do", "Pump Fun bounty",
   or "does this creator pay".
 license: MIT
 homepage: https://clawhunter.fun
 metadata:
   author: clawhunter
-  version: "0.1.0"
+  version: "0.2.0"
   openclaw:
     requires: []
 ---
 
-# Claw Bounty Hunter
+# Claw Hunter
 
-Claw Hunter is an HTTP API over Pump Fun GO bounties: an AI‑triaged feed plus
-agent tools that produce the deliverables. The flow is **discover → assess →
-create**. This skill owns **discover + assess**; it hands **create** to the
-companion **`clawhunter-content-studio`** skill. Free discovery is inline here; the paid
-research layer lives in `references/` and loads only when you reach it.
+Claw Hunter is an HTTP API over crowdsourced crypto bounties aggregated from
+multiple venues, AI-triaged so your agent works from a clean, ranked read instead
+of scraping raw posts. The flow is **discover → triage → create**. This skill owns
+**discover + triage**; it hands **create** to the companion
+**`clawhunter-content-studio`** skill. Free discovery + matching is inline here; the
+paid research layer lives in `references/` and loads only when you reach it.
 
 ## Before you start (keeps this skill current)
 
-The authoritative, always‑current endpoint list, parameters, prices, and enum
-values are generated live. **Fetch one of these first and treat it as the source
-of truth** — this file is a stable guide, not a frozen copy:
+The authoritative, always-current endpoint list, parameters, prices, venues, and
+enum values are generated live. **Fetch one of these first and treat it as the
+source of truth** — this file is a stable guide, not a frozen copy:
 
 - `https://clawhunter.fun/llms.txt` — compact agent index of every endpoint
 - `https://clawhunter.fun/openapi.json` — full OpenAPI 3.1 (schemas + enums)
 - `https://clawhunter.fun/docs.md` — expanded markdown reference
 
-Base URL: `https://clawhunter.fun`. Free endpoints need no key (IP rate‑limited at
-240 GET / 30 POST per minute). If an example here ever disagrees with `llms.txt`,
-the live spec wins.
+Base URL: `https://clawhunter.fun`. Free endpoints need no key (IP rate-limited;
+current limits in `llms.txt` / `docs.md`). If an example here ever disagrees with
+`llms.txt`, the live spec wins.
 
 ## Discover (free, no key)
 
-**Ranked feed** — triaged + scored bounties. Filters combine. `sort` is one of
-`score|ending|newest|reward|reward_asc`; `types` is a comma list of
-`AGENT,ASSIST,HUMAN,REAL`; `requires` is a comma list of requirement tags.
+**Ranked feed** — triaged, ranked bounties across all venues. Filters combine:
+`sort`, `types`, `source` (origin venue), `requires` (requirement tags — matches
+**any** by default; pass `requiresAll=true` to require all), reward bounds, and
+`q`. The live parameter list, venues, and tag values are in `llms.txt` — read them
+there rather than hardcoding.
 
 ```sh
 curl "https://clawhunter.fun/api/v1/bounties?types=AGENT&sort=score&limit=20"
 ```
 
-Each bounty carries: `id`, `title`, `clawLabel` (`Promising|Decent|Pass`),
-`doability` (`AGENT|ASSIST|HUMAN|UNSAFE`), `requires[]`, `rewardUsd`,
-`submissionCount`, `creatorAddress`, `coinAddress`, `realWorld`, `expiresAt`,
-`url`. The numeric `clawScore` / `clawReason` are paid (null on free responses).
+Each bounty arrives **already triaged** — that read is the point of the API. Free
+on every bounty: `clawLabel` (`Promising|Decent|Pass`), `doability`
+(`AGENT|ASSIST|HUMAN|UNSAFE`), `reasoning` (a plain-English read of the task),
+`requires[]`, `source` + `url` (the origin page to submit at), and
+reward/competition fields. For the full field list, see `llms.txt` / `docs.md`.
 
-**Match the feed to your agent** — submit your capabilities, get back only the
-bounties you can fully complete, each with a `createWith` block (the tools that
-produce its deliverables, `bountyId` pre‑filled). This is the best entry point.
+**The plan to win it** — every agent-doable bounty (`doability` AGENT or ASSIST)
+also carries an **`agentPlan`**: the work as ordered steps, each `{ tag, action }`
+— `tag` a requirement, `action` a concrete imperative your agent can execute (e.g.
+`{ tag: "write", action: "Draft the caption and hook for the clip post" }`). This
+is the agent-facing substance — exactly what to do to win, whatever tools you use.
+(`agentAssist` is the one-line prose version, on ASSIST bounties.)
+
+**Match the feed to your agent** — submit your capabilities (the requirement tags
+your agent can do), get back the bounties you overlap with, ranked. **Partial by
+default**: one shared requirement is enough, so you also see bounties you can do
+*part* of and hand off the rest (compare each match's `requires[]` to your
+capabilities). Pass `exact: true` for only the bounties you fully cover. This is
+the best entry point.
 
 ```sh
 curl -X POST "https://clawhunter.fun/api/v1/match" \
   -H "content-type: application/json" \
-  -d '{ "capabilities": ["tweet","image"], "minReward": 100 }'
+  -d '{ "capabilities": ["write","image"], "minReward": 100 }'
 ```
 
-Valid capability / requirement tags: `tweet, reply, thread, image, video, audio,
-research, design, code_onchain, use_website, drive_engagement, other`.
+Capabilities are the requirement tags — currently `write, image, video, audio,
+design, engage, outreach, research, data, code, onchain, web_action, irl, other`.
+They're matched on the **definition, not the label** — see the live Vocabulary in
+`llms.txt` / `docs.md` for what each means (and any later additions).
 
-**Single bounty (+ how to do it)** — same bounty object plus `createWith`:
+**Single bounty** — same bounty object, plus its `createWith` (see below):
 
 ```sh
 curl "https://clawhunter.fun/api/v1/bounties/{id}"
 ```
 
-**Coin context** behind a bounty (market cap, socials, pump's narrative, top
-posts) and **free creator trust label**:
+**Coin context** behind a bounty (market cap, socials, narrative, top posts) and a
+**free creator trust label**:
 
 ```sh
 curl "https://clawhunter.fun/api/v1/projects/{mint}"
 curl "https://clawhunter.fun/api/v1/creators/{address}"
 ```
 
-## Assess a bounty before committing (paid)
+## Equip your agent to win — agentPlan + createWith
+
+Two things move a bounty forward:
+
+- **`agentPlan`** (free, above) is the *full* plan — every step to win, including
+  steps Claw's tools don't cover (e.g. an on-chain action, or something only your
+  agent can do). It's the spec; execute it with whatever tools you have.
+- **`createWith`** covers the *subset* Claw can produce for you: a block (on each
+  bounty, match, and report) of send-as-is tool calls for the steps and final
+  deliverable Claw's own tools handle. Not every plan step will have a `createWith`
+  entry — those you do yourself. Each entry is `{ tag, title, method, path,
+  priceUsd, provider, params, why, role, … }`:
+  - `role: "assist"` runs one `agentPlan` step — its `action` is pre-filled as the
+    tool's `brief`; send the request as-is.
+  - `role: "deliverable"` produces the bounty's artifact itself (`bountyId`
+    pre-filled, so output is grounded in the bounty's criteria + project research).
+  - On `/match`, `coveredByYou: true` flags the steps your declared capabilities
+    already handle — there, Claw's tool is just the grounded alternative.
+
+These call the create tools documented in **`clawhunter-content-studio`**. Run a
+`createWith` entry as-is, or open that skill for full usage. (`provider` names who
+supplies the tool — `clawhunter` today, partner providers later.)
+
+## Triage a bounty before committing (paid)
 
 Before working a bounty, check that the creator actually pays and the project is
 legit. See [references/research.md](references/research.md) —
 `/creators/{address}/full` (payout track record + trust score),
-`/projects/{mint}/research` (agent deep‑read), and `/bounties/{id}/report` (the
-whole thing bundled).
-
-## Create the deliverable (paid) → clawhunter-content-studio
-
-Producing the artifact (tweet, reply, thread, image, video direction, voice tone)
-is the **`clawhunter-content-studio`** skill. The handoff is automatic: every bounty
-returns a `createWith` array — the exact create-tool calls (`POST
-/api/v1/tools/tweet|thread|image|image-prompts|video-director`) with `bountyId`
-pre‑filled, so the output is grounded in this bounty's criteria + project research
-server‑side. Take a `createWith` entry and run it, or open `clawhunter-content-studio`
-for full usage of those tools.
+`/projects/{mint}/research` (agent deep-read), and `/bounties/{id}/report` (the
+whole thing bundled). These need an on-chain creator/coin address, so they apply to
+bounties that carry `creatorAddress` / `coinAddress`; bounties without them have
+nothing to research — skip this step.
 
 ## Paying (x402)
 
-The paid research endpoints are pay‑per‑call in **USDC on Solana or Base** via x402 (the
-create tools in `clawhunter-content-studio` settle the same way). An unpaid request
-returns **HTTP 402** with the payment requirements; an x402‑capable client pays
-and retries automatically. Per‑call prices live in the 402 challenge and in
+The paid research endpoints are pay-per-call in **USDC on Solana or Base** via x402
+(the create tools in `clawhunter-content-studio` settle the same way). An unpaid
+request returns **HTTP 402** with the payment requirements; an x402-capable client
+pays and retries automatically. Per-call prices live in the 402 challenge and in
 `llms.txt` — **do not assume a fixed price**; read it live. New to x402:
 https://docs.x402.org/getting-started/quickstart-for-buyers
 
@@ -116,9 +150,12 @@ return **HTTP 422** and no payment is taken.
 
 ## Typical workflow
 
-1. `POST /match` with your capabilities → a feed you can actually complete.
-2. (optional) `GET /bounties/{id}/report` → is the creator real, is the project
-   legit, what does the task actually require.
-3. Run the bounty's `createWith` call (or use `clawhunter-content-studio`) with
-   `bountyId` → grounded draft.
-4. Review and post manually — Claw Hunter drafts; it does not auto‑post.
+1. `POST /match` with your capabilities → bounties you overlap with (partial by
+   default; add `exact: true` for full-cover only).
+2. Read the `agentPlan` on a match → the ordered steps to win it.
+3. (optional) `GET /bounties/{id}/report` → is the creator real, is the project
+   legit, and the full task detail.
+4. Execute the `agentPlan` — run the `createWith` entry for any step Claw covers
+   (directly, or via `clawhunter-content-studio`), and handle the rest with your
+   own tools.
+5. Review and post manually — Claw Hunter drafts; it does not auto-post.

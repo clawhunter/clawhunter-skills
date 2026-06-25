@@ -7,14 +7,14 @@ description: >-
   short-form video direction (shot lists + Veo/Kling prompts). Also drafts tweets,
   replies, and threads. Use to build or apply a custom voice, make an on-brand
   image or meme, plan a video, or write social copy — standalone, or grounded in a
-  Pump Fun bounty by passing its bountyId (see the clawhunter-bounties skill). Free
-  tone presets, no key; generation is pay-per-call in USDC on Solana or Base via x402. API
-  at clawhunter.fun.
+  Claw Hunter bounty by passing its bountyId (see the clawhunter-bounties skill).
+  Free tone presets, no key; generation is pay-per-call in USDC on Solana or Base
+  via x402. API at clawhunter.fun.
 license: MIT
 homepage: https://clawhunter.fun
 metadata:
   author: clawhunter
-  version: "0.1.0"
+  version: "0.2.0"
   openclaw:
     requires: []
 ---
@@ -23,7 +23,7 @@ metadata:
 
 Claw's agent tools for producing social/crypto content — text, images, video
 direction, and reusable voices — over the Claw Hunter API. Use them on their own
-from a freeform brief, or grounded in a Pump Fun GO bounty. Every generation call
+from a freeform brief, or grounded in a Claw Hunter bounty. Every generation call
 returns a `run` log of what Claw's agents did.
 
 ## Before you start (keeps this skill current)
@@ -46,15 +46,16 @@ Each text/visual tool needs **at least one** of `brief` or `bountyId` — and th
 
 - **`brief`** — a freeform ask. On its own it's the whole instruction. This is the
   default for standalone use.
-- **`bountyId`** — a Pump Fun bounty's `id` (from the **`clawhunter-bounties`**
-  skill: `GET /api/v1/bounties` or `POST /api/v1/match`). Pass it and the server
+- **`bountyId`** — a bounty's `id` from the **`clawhunter-bounties`** skill
+  (`GET /api/v1/bounties` or `POST /api/v1/match`). Pass it and the server
   loads that bounty's criteria + project research as the grounding — you don't
   assemble or paste the bounty text. Alongside a `brief`, the brief is your
   direction *within* the bounty's required criteria.
 - **`context`** — extra grounding text, layered on either.
 
 When working a bounty, that skill's `createWith` array hands you these exact calls
-with `bountyId` pre‑filled — run one as‑is.
+— `bountyId` pre‑filled for the `role: deliverable` entries, or an `agentPlan` step
+pre‑filled as the `brief` for `role: assist` entries — run one as‑is.
 
 Tone defaults to **Claw**. Pass `toneId` (a preset slug or custom tone UUID) to
 write in any voice.

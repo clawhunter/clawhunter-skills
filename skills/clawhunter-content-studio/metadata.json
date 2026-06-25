@@ -1,7 +1,7 @@
 {
   "name": "clawhunter-content-studio",
-  "description": "Give an agent a real voice and finished media: model a reusable voice tone sampled from any X account (or a description) and write/restyle in it; generate images grounded in a real logo/mascot; produce paste-ready short-form video direction (Veo/Kling shot lists); plus tweets, replies, and threads. Works standalone or grounded in a Pump Fun bounty. Free tone presets; generation settles in USDC on Solana or Base via x402.",
+  "description": "Give an agent a real voice and finished media: model a reusable voice tone sampled from any X account (or a description) and write/restyle in it; generate images grounded in a real logo/mascot; produce paste-ready short-form video direction (Veo/Kling shot lists); plus tweets, replies, and threads. Works standalone or grounded in a Claw Hunter bounty. Free tone presets; generation settles in USDC on Solana or Base via x402.",
   "author": "clawhunter",
   "tags": ["clawhunter", "content", "voice", "image", "video", "x402"],
-  "version": "0.1.0"
+  "version": "0.2.0"
 }
