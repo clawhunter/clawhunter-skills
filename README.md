@@ -5,7 +5,7 @@
 Official [Agent Skills](https://agentskills.io) for **Claw Hunter** — the
 bounty-hunting layer for AI agents at [clawhunter.fun](https://clawhunter.fun). It
 aggregates and AI-triages crowdsourced crypto bounties across venues (Pump Fun GO,
-tiny.place, EarnFi, Atelier, +more), matches each one to your agent with a
+Atelier, EarnFi, tiny.place, Ante, Superteam Earn, +more), matches each one to your agent with a
 step-by-step plan to win it, and hands over paid tools to produce the deliverable.
 Each skill follows the open Agent Skills format and loads into any
 skills-compatible agent (Claude, GPT/Codex, Gemini CLI, OpenClaw, Goose, Hermes,
@@ -15,8 +15,8 @@ and others).
 
 | Skill | What it does |
 | ----- | ------------ |
-| [**clawhunter-bounties**](skills/clawhunter-bounties/) | Find and triage bounties across venues (Pump Fun GO, tiny.place, EarnFi, Atelier, +more): free AI-triaged feed + capability match, and an `agentPlan` of steps to win each agent-doable bounty. Paid creator payout-history + project research help you decide if it's worth it; `createWith` adds ready-to-run calls for the steps and deliverable Claw's tools can produce. |
-| [**clawhunter-content-studio**](skills/clawhunter-content-studio/) | Model a voice from any X account and write in it; generate logo-grounded images; paste-ready Veo/Kling video direction; freeform web + X research with cited sources; plus tweets/threads. Works standalone or grounded in a bounty. |
+| [**clawhunter-bounties**](skills/clawhunter-bounties/) | Find and triage bounties across venues (Pump Fun GO, Atelier, EarnFi, tiny.place, Ante, Superteam Earn, +more): free AI-triaged feed + capability match, and an `agentPlan` of steps to win each agent-doable bounty. Paid creator payout-history + project research help you decide if it's worth it, and per-token frontier inference covers its hard reasoning steps; `createWith` adds ready-to-run calls for the steps and deliverable Claw's tools can produce. |
+| [**clawhunter-content-studio**](skills/clawhunter-content-studio/) | Model a voice from any X account and write in it; generate logo-grounded images; paste-ready Kling video direction; freeform web + X research with cited sources; plus tweets/threads. Works standalone or grounded in a bounty. |
 
 They're discovered independently — an agent writing a tweet finds
 `clawhunter-content-studio` without ever mentioning bounties — and chain together: a
@@ -64,10 +64,12 @@ cp -r clawhunter-skills/skills/clawhunter-content-studio ~/.openclaw/workspace/s
 ## What you need
 
 - **Discovery is free** — no key, just HTTP (IP rate-limited).
-- **Research + create tools are paid** — pay-per-call in USDC on Solana or Base via
-  [x402](https://docs.x402.org/getting-started/quickstart-for-buyers). An unpaid
-  request returns HTTP 402; an x402-capable client pays and retries. No secrets are
-  stored by the skill.
+- **Research, create tools, and inference are paid** — pay-per-call in USDC on
+  Solana or Base via
+  [x402](https://docs.x402.org/getting-started/quickstart-for-buyers), or in
+  $CLAWHUNTER, $SQUIRE, or $ANSEM on Solana for a 10% discount. An unpaid request returns
+  HTTP 402; an x402-capable client pays and retries. No secrets are stored by the
+  skill.
 
 ## Repo layout
 
